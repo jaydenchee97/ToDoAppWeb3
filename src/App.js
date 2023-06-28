@@ -47,7 +47,7 @@ const App = () => {
 
   const fetchData = async () => {
     const result = await getTasks(contract);
-    setTasks(result);
+    await setTasks(result);
   };
 
   const runCreateTask = async () => {
@@ -67,25 +67,52 @@ const App = () => {
   }
 
   const runToggleCompleted = async (taskId) => {
-    await toggleCompleted(contract, taskId, defaultAccount);
-    toast.success('Toggle Completed !', {
-      position: toast.POSITION.TOP_RIGHT
+    const toggled = await toggleCompleted(contract, taskId, defaultAccount);
+    let msg = "";
+    const result = await getTasks(contract);
+    const task = result.find((task) => {
+      if (task.id == taskId) {
+        return task
+      }
     });
+    console.log(task);
+    if (toggled) {
+      if (task.completed) {
+        msg = "Task completed";
+      }
+      else {
+        msg = "Undo completed";
+      }
+      toast.success(msg, {
+        position: toast.POSITION.TOP_RIGHT
+      });
+    } else {
+      toast.error('Toggle Completed Fail to Trigger', {
+        position: toast.POSITION.TOP_RIGHT
+      });
+    }
     fetchData();
+
   }
 
   const runDeleteTask = async (taskId) => {
-    await deleteTask(contract, taskId, defaultAccount);
-    toast.success('Task Deleted!', {
-      position: toast.POSITION.TOP_RIGHT
-    });
+    const deleted = await deleteTask(contract, taskId, defaultAccount);
+    if (deleted) {
+      toast.success('Task Deleted', {
+        position: toast.POSITION.TOP_RIGHT
+      });
+    } else {
+      toast.error('Task Fail to Delete', {
+        position: toast.POSITION.TOP_RIGHT
+      });
+    }
     fetchData();
   }
 
   
 
   return (
-    <Container>
+    <Container >
       <Row className="mt-5">
         <Col>
           <h1 className="text-center mb-4">To-Do List</h1>
