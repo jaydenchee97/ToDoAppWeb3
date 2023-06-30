@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import config from "./config/config.json"
 import ToDoListContract from './artifacts/contracts/ToDoList.sol/ToDoList.json';
 import Web3 from 'web3';
 import { getTasks, createTask, toggleCompleted, deleteTask } from './services/ToDoListContractService';
@@ -28,7 +29,7 @@ const App = () => {
         console.log(accounts[0]);
 
         const contractABI = ToDoListContract.abi;
-        const contractAddress = "0x5fbdb2315678afecb367f032d93f642f64180aa3";
+        const contractAddress = config.contract.address;
         const contractInstance = new web3Instance.eth.Contract(contractABI, contractAddress);
         setContract(contractInstance);
         console.log(contractInstance);
@@ -112,10 +113,10 @@ const App = () => {
   
 
   return (
-    <Container >
-      <Row className="mt-5">
+    <Container>
+      <Row className="mt-5 bg-dark">
         <Col>
-          <h1 className="text-center mb-4">To-Do List</h1>
+          <h1 className="text-center mb-4 text-white">To-Do List</h1>
           <Form >
             <Row className="align-items-center">
               <Col xs="8">
@@ -136,9 +137,9 @@ const App = () => {
               </Col>
             </Row>
           </Form>
-          <ListGroup className="mt-4">
+          <ListGroup className="mt-4 bg-secondary">
             {tasks.map((task) => (
-              <ListGroup.Item key={task.id}>
+              <ListGroup.Item key={task.id} className="bg-secondary border-dark">
                 <div className="d-flex align-items-center">
                   <div className="flex-grow-1">
                     <span
