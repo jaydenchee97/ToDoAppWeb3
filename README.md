@@ -11,7 +11,7 @@ You also need a wallet before running the application.
 npm install
 ```
 
-## hardhat
+## Hardhat
 
 This project requires to use hardhat to compile and release the contract to the network. 
 In this example, the contract will be compile and release on the local network.
